@@ -81,22 +81,26 @@ def prod37(fte, producto):
 def prod37Nuevo(fte,producto):
 
     cols_use = [0,1,2,3]
-    df_full = pd.read_excel(fte, sheet_name = 'Diario',usecols=cols_use)
+
+    data = []
+    for file in glob.glob(fte + '/DATOS*.xlsx'):
+
+        df_full = pd.read_excel(fte, sheet_name = 'Diario',usecols=cols_use)
 
     #convert 1st row as series name: Defunciones_fecha
-    df_full.iloc[0, 1:] = df_full.iloc[0, 1:].astype(str)
-    df_full.iloc[0, 1:] = df_full.iloc[0, 1:].replace(' 00:00:00', '', regex=True)
-    #print(df_full2.iloc[0, 1:])
+        df_full.iloc[0, 1:] = df_full.iloc[0, 1:].astype(str)
+        df_full.iloc[0, 1:] = df_full.iloc[0, 1:].replace(' 00:00:00', '', regex=True)
+        #print(df_full2.iloc[0, 1:])
 
-    df_full.iloc[1:, 0] = df_full.iloc[1:, 0].astype(str)
-    df_full.iloc[1:, 0] = df_full.iloc[1:, 0].replace(' 00:00:00', '', regex=True)
+        df_full.iloc[1:, 0] = df_full.iloc[1:, 0].astype(str)
+        df_full.iloc[1:, 0] = df_full.iloc[1:, 0].replace(' 00:00:00', '', regex=True)
 
-    new_header = df_full.iloc[0]  # grab the first row for the header
-    df_full = df_full[1:]  # take the data less the header row
-    df_full.columns = new_header  # set the header row as the df header
+        new_header = df_full.iloc[0]  # grab the first row for the header
+        df_full = df_full[1:]  # take the data less the header row
+        df_full.columns = new_header  # set the header row as the df header
 
-    #producto T
-    #print(df_full.to_string())
+        #producto T
+        #print(df_full.to_string())
     df_full.to_csv(producto + '_deis_T.csv', index=False)
 
     df_regular = df_full.T
